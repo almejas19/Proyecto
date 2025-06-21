@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:  # Servicio de psql
+    image: postgres:15
+    container_name: proyecto  # Nombre para mi docker
+    restart: always
+    environment:
+      POSTGRES_USER: byron  # usuario dg
+      POSTGRES_PASSWORD: 1234  # contra
+      POSTGRES_DB: galileo  # bd
+    ports:
+      - "5433:5432"  # (host:puerto) 
+    volumes:
+      - pg_tarea_data:/var/lib/postgresql/data  # Vol para persistir datos
+
+volumes:
+  pg_tarea_data:  # Volumen dedicado para este proyecto
