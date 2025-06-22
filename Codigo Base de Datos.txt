@@ -1,0 +1,27 @@
+-- Extensión para UUID
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+-- Eliminar si ya existen
+DROP TABLE IF EXISTS historial_operaciones;
+DROP TABLE IF EXISTS users;
+
+-- Tabla de usuarios
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    tipo VARCHAR(20) NOT NULL DEFAULT 'invitado' CHECK (tipo IN ('admin','estandar','invitado')),
+    operaciones_restantes INT NOT NULL
+);
+
+-- Historial de operaciones por usuario
+CREATE TABLE historial_operaciones (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    expresion TEXT NOT NULL,
+    resultado TEXT,
+    tipo_operacion VARCHAR(20) NOT NULL CHECK (tipo_operacion IN ('aritmetica', 'booleana')),
+    operaciones_restantes_al_momento INT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
