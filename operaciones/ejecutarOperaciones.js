@@ -9,10 +9,10 @@ function evaluarExpresionAritmetica(expresion) {
     let resultado = parseFloat(tokens[0]);
 
     for (let i = 1; i < tokens.length; i += 2) {
-      const operador = tokens[i];
+      const operador = tokens[i].toUpperCase();
       const siguienteNumero = parseFloat(tokens[i + 1]);
 
-      switch (operador.toUpperCase()) {
+      switch (operador) {
         case "SUMA":
           resultado += siguienteNumero;
           break;
@@ -25,8 +25,11 @@ function evaluarExpresionAritmetica(expresion) {
         case "DIVIDE":
           resultado /= siguienteNumero;
           break;
+        case "POTENCIA":
+          resultado = Math.pow(resultado, siguienteNumero);
+          break;
         default:
-          return "❌ Operador no válido.";
+          return "❌ Operador no válido. Usa SUMA, RESTA, MULTIPLICA, DIVIDE o POTENCIA.";
       }
     }
 
@@ -36,7 +39,7 @@ function evaluarExpresionAritmetica(expresion) {
   }
 }
 
-// 🔧 Función para evaluar expresiones booleanas
+// Evaluar expresiones booleanas (true and false or true)
 function evaluarExpresionBooleana(expresion) {
   try {
     const tokens = expresion.trim().toLowerCase().split(" ");
@@ -64,7 +67,7 @@ function evaluarExpresionBooleana(expresion) {
   }
 }
 
-// 🧠 Lógica principal
+// 🧠 Lógica de ejecución
 async function ejecutarOperaciones(usuario) {
   console.log("\n🧮 Bienvenido al sistema de operaciones.");
   const tipo = usuario.tipo.toLowerCase();
@@ -76,7 +79,6 @@ async function ejecutarOperaciones(usuario) {
   };
 
   const rol = permisos[tipo];
-
   let operacionesRestantes = Number(usuario.operaciones_restantes);
   if (isNaN(operacionesRestantes)) operacionesRestantes = 0;
 
@@ -99,7 +101,7 @@ async function ejecutarOperaciones(usuario) {
     if (opcion === 'exit') break;
 
     if (opcion === 'aritmetica' && rol.aritmetica) {
-      const expresion = prompt("🧮 Escribe tu expresión (ej: 5 SUMA 3 MULTIPLICA 2): ");
+      const expresion = prompt("🧮 Escribe tu expresión (ej: 2 POTENCIA 3 o 5 SUMA 4): ");
       const resultado = evaluarExpresionAritmetica(expresion);
 
       if (typeof resultado === 'string' && resultado.startsWith("❌")) {

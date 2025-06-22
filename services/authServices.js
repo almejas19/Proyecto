@@ -38,4 +38,5 @@ async function login(username, password) {
     }
 }
 
+//exportar createUser
 module.exports = { createUser, login };
